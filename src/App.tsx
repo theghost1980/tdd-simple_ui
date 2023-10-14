@@ -1,14 +1,11 @@
-import { useState } from 'react'
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import './App.css'
-import { Loader } from './components/Loader';
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <>
-      <div>Main App</div>
-      {isLoading && <Loader />}
+      <div data-testid={'main_header'}>Search HIVE App</div>
     </>
   )
 }
