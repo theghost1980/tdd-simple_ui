@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import './App.css'
-import SearchBar from './components/Searchbar'
+import SearchBar from './components/SearchBar'
+
 
 function App() {
 
