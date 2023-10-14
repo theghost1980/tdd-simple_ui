@@ -12,4 +12,8 @@ describe('App tests:', () => {
         render(<App />);
         expect(screen.getByTestId('search-bar')).toBeInTheDocument();
     });
+
+    it('must make conflict the code', () => {
+        expect(true).toBe(true);
+    });
 });
