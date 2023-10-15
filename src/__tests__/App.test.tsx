@@ -12,4 +12,6 @@ describe('App tests:', () => {
         render(<App />);
         expect(screen.getByTestId('search-bar')).toBeInTheDocument();
     });
+
+    
 });
