@@ -5,6 +5,9 @@ import SearchBar from "../../components/SearchBar"
 import userEvent from "@testing-library/user-event"
 
 describe('Search Bar Test', () => { 
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
     it('must find a testid of "search-text"', () => {
         render(<SearchBar />)
         
@@ -24,19 +27,41 @@ describe('Search Bar Test', () => {
     })
 
     it('must change text when user types', async () => {
-        render(<SearchBar/>)
+        
+        render(<SearchBar/>);
 
-        const inputElement = screen.getByTestId('search-text')
+        const inputElement = screen.getByTestId('search-text');
         await act(async () => {
-            await userEvent.type(inputElement, "hive account")
+            await userEvent.type(inputElement, "hive account");
         });
         
-        screen.debug()
-            expect(inputElement).toHaveTextContent('kcmaskc')
-        
-
+        expect(inputElement).toHaveValue('hive account');
+  
     })
 
+    it('must invoke a handleSearch function when clicked', async () => {
+         const spyLogger = jest.spyOn(console, "log");
+         render(<SearchBar />);
+
+         const buttonElement = screen.getByTestId("search-button");
+         await act(async () => {
+           await userEvent.type(screen.getByTestId('search-text'), 'hive accounts');
+           await userEvent.click(buttonElement);
+         });
+         expect(spyLogger).toBeCalledWith("searching");
+    })
+
+    it('must not call if input is empty', async () => {
+        const spyLogger = jest.spyOn(console, "log");
+        render(<SearchBar />)
+        const buttonElement = screen.getByTestId("search-button");
+        await act(async () => {
+          await userEvent.click(buttonElement);
+        });
+
+        expect(spyLogger).not.toBeCalledWith("searching");
+        
+    })
     
 
  })
