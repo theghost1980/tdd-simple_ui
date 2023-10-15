@@ -10,7 +10,7 @@ describe('Hive Api tests', () => {
 
     it('Must override the rpc node', () => {
         const client = api.overrideClient("https://api.hive.blog");
-        expect(client.address).toBe("https://api.hive.blog");
+        expect(client.address).toEqual(["https://api.hive.blog"]);
     });
 
     it('Must return hive user data', async() => {
