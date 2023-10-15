@@ -1,4 +1,4 @@
-import { act, render, screen,  } from "@testing-library/react"
+import { act, render, screen, waitFor,  } from "@testing-library/react"
 
 import '@testing-library/jest-dom'
 import SearchBar from "../../components/SearchBar"
@@ -63,5 +63,25 @@ describe('Search Bar Test', () => {
         
     })
     
+    it('must return hive user data', async () => {
+        const spyLogger = jest.spyOn(console, "log");
+        render(<SearchBar />);
+        const buttonElement = screen.getByTestId("search-button");
+        await act(async () => {
+            
+           await userEvent.type(
+             screen.getByTestId("search-text"),
+             "zullyscott"
+           );
+            
+          await userEvent.click(buttonElement);
+        });
+       await waitFor(() => {
+            expect(spyLogger).toBeCalledWith({
+              name: "zullyscott",
+            });
+        })
+        
+    })
 
  })

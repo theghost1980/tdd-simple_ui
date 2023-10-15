@@ -1,8 +1,16 @@
 import { useState } from 'react'
+import { api } from '../api/hive-api'
 const SearchBar = () => {
     const [searchText, setSearchText] = useState("")
-   const handleSearch = () => {
-        if (searchText.trim().length > 0) console.log('searching');
+   const handleSearch = async () => {
+        if (searchText.trim().length > 0) {
+            const data = await api.getAccount(searchText);
+            console.log({
+              name: data[0].name
+            })
+            
+        }
+
    }
   return (
     <>
