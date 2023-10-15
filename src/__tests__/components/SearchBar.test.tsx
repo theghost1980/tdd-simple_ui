@@ -3,6 +3,8 @@ import { act, render, screen, waitFor,  } from "@testing-library/react"
 import '@testing-library/jest-dom'
 import SearchBar from "../../components/SearchBar"
 import userEvent from "@testing-library/user-event"
+import { api } from "../../api/hive-api"
+import { dataUSername } from "../../test/__ mocks __/data-reference/data-username"
 
 describe('Search Bar Test', () => { 
     afterEach(() => {
@@ -63,25 +65,37 @@ describe('Search Bar Test', () => {
         
     })
     
-    it('must return hive user data', async () => {
-        const spyLogger = jest.spyOn(console, "log");
+    it('must show hive user data', async () => {
+        const spyApiGetAccount = jest.spyOn(api,'getAccount').mockResolvedValue([dataUSername]);
         render(<SearchBar />);
         const buttonElement = screen.getByTestId("search-button");
-        await act(async () => {
-            
            await userEvent.type(
              screen.getByTestId("search-text"),
              "zullyscott"
            );
-            
           await userEvent.click(buttonElement);
-        });
-       await waitFor(() => {
-            expect(spyLogger).toBeCalledWith({
-              name: "zullyscott",
-            });
+        expect(spyApiGetAccount).toBeCalledWith('zullyscott');
+
+       await waitFor( () => {
+            expect(screen.getByTestId('data-username').textContent).toBe('zullyscott');
         })
-        
-    })
+    });
+
+    it('must show not found message', async () => {
+      const spyApiGetAccount = jest.spyOn(api,'getAccount').mockRejectedValue(new Error('User not found!'));
+
+        render(<SearchBar />);
+        const buttonElement = screen.getByTestId("search-button");
+           await userEvent.type(
+             screen.getByTestId("search-text"),
+             "zullyscott"
+           );
+          await userEvent.click(buttonElement);
+        expect(spyApiGetAccount).toBeCalledWith('zullyscott');
+
+       await waitFor( () => {
+            expect(screen.getByText('User not found!')).toBeInTheDocument();
+        })
+    });
 
  })
